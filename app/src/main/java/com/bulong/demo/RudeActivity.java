@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
  * Created by Caodongyao on 2017/7/28.
  */
 
-public class RudeActivity extends AppCompatActivity{
+public class RudeActivity extends BaseActivity{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
