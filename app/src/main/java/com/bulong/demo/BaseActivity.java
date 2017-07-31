@@ -42,6 +42,8 @@ public class BaseActivity extends AppCompatActivity{
 
     //将pt转换为px值
     public float pt2px(int value){
+
+        //TypedValue.applyDimension时注意传入的DisplayMetrics是改过之后的。或者不用这个方法自己来计算。
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PT, value, getResources().getDisplayMetrics());
     }
 }
