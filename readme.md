@@ -28,10 +28,9 @@
 ![图三.png](http://upload-images.jianshu.io/upload_images/3490737-58833d43921ca88b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
 ![图四.png](http://upload-images.jianshu.io/upload_images/3490737-0fba2d15eaebfd8a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-- 代码处理。代码处理有两种方案：如果所有页面的设计图尺寸都一样，则在Applicalition中的`onCreate`中与`onConfigurationChanged`中处理即可；如果每个页面的设计图尺寸不一样，则需要在每个activity的`onCreate`中处理（`Activity`中不需要处理`onConfigurationChanged`，因为配置变化页面会重新生成）。
-    - 全局处理方案。在`Application`的`onCreate`中与`onConfigurationChanged`中更改`DisplayMetrics`（其中`DESIGN_WIDTH`是绘制页面时参照的设计图宽度）：
+- 代码处理。在每个activity的`onCreate`中处理（写在自己的基类BaseActivity中然后继承最佳）(`Activity`中不需要处理`onConfigurationChanged`，因为配置变化页面会重新生成)(因为在API26有适配问题，以及根据评论区其他玩家的反馈，不建议在Application中处理)。
     ```java
-    public class MyApplication extends Application{
+    public class BaseActivity extends Activity{
 
         public final static float DESIGN_WIDTH = 750; //绘制页面时参照的设计图宽度
 
@@ -50,7 +49,7 @@
 
         public void resetDensity(){
             Point size = new Point();
-            ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getSize(size);
+            getWindowManager().getDefaultDisplay().getSize(size);
 
             getResources().getDisplayMetrics().xdpi = size.x/DESIGN_WIDTH*72f;
         }
