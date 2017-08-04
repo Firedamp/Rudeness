@@ -1,8 +1,10 @@
-package com.bulong.demo;
+package com.bulong.demo.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import com.bulong.demo.R;
 
 /**
  * Created by Caodongyao on 2017/7/28.
