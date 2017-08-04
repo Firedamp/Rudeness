@@ -28,31 +28,53 @@
 ![图三.png](http://upload-images.jianshu.io/upload_images/3490737-58833d43921ca88b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
 ![图四.png](http://upload-images.jianshu.io/upload_images/3490737-0fba2d15eaebfd8a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-- 代码处理。在每个activity的`onCreate`中处理（写在自己的基类BaseActivity中然后继承最佳）(`Activity`中不需要处理`onConfigurationChanged`，因为配置变化页面会重新生成)(因为在API26有适配问题，以及根据评论区其他玩家的反馈，不建议在Application中处理)。
+- 代码处理。(已修改，感谢[lingeringsmile](http://www.jianshu.com/users/fcf910b30984/timeline)的建议)。
     ```java
-    public class BaseActivity extends Activity{
-
-        public final static float DESIGN_WIDTH = 750; //绘制页面时参照的设计图宽度
+    public class MyApplication extends Application {
 
         @Override
         public void onCreate() {
             super.onCreate();
 
-            resetDensity();
+            registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+                @Override
+                public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                    //通常情况下application与activity得到的resource虽然不是一个实例，但是displayMetrics是同一个实例，只需调用一次即可
+                    //为了面对一些不可预计的情况以及向上兼容，分别调用一次较为保险
+                    resetDensity(MyApplication.this, 750);
+                    resetDensity(activity, 750);
+                }
+
+                @Override
+                public void onActivityStarted(Activity activity) {}
+                @Override
+                public void onActivityResumed(Activity activity) {}
+                @Override
+                public void onActivityPaused(Activity activity) {}
+                @Override
+                public void onActivityStopped(Activity activity) {}
+                @Override
+                public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+                @Override
+                public void onActivityDestroyed(Activity activity) {}
+            });
         }
 
-        @Override
-        public void onConfigurationChanged(Configuration newConfig) {
-            super.onConfigurationChanged(newConfig);
-            resetDensity();
-        }
-
-        public void resetDensity(){
+        /**
+        * 重新计算displayMetrics.xhdpi, 使单位pt重定义为设计稿的相对长度
+        *
+        * @param context
+        * @param designWidth 设计稿的宽度
+        */
+        private static void resetDensity(Context context, float designWidth) {
             Point size = new Point();
-            getWindowManager().getDefaultDisplay().getSize(size);
+            ((WindowManager) context.getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getSize(size);
 
-            getResources().getDisplayMetrics().xdpi = size.x/DESIGN_WIDTH*72f;
+            context.getResources().getDisplayMetrics().xdpi = size.x / designWidth * 72f;
         }
+    }
     ```
+
+- 最佳实践。调用demo中的`DensityHelper.activate()`
 
 这样绘制出来的页面就跟设计图几乎完全一样，无论大小屏上看起来就只是将设计图缩放之后的结果。
