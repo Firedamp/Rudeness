@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60pt"
-            android:text='用户名'
+            android:text='NORMAL'
             android:textColor="@android:color/white"
             android:textSize="18dp" />
 
