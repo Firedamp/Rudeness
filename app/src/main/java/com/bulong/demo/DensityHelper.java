@@ -38,17 +38,15 @@ public class DensityHelper {
 
         resources.getDisplayMetrics().xdpi = size.x/designWidth*72f;
 
-        //解决MIUI更改框架导致的MIUI7+Android5.1.1上出现的失效问题
-        if("MiuiResources".equals(resources.getClass().getSimpleName())){
+        //解决MIUI更改框架导致的MIUI7+Android5.1.1上出现的失效问题(以及极少数基于这部分miui去掉art然后置入xposed的手机)
+        if("MiuiResources".equals(resources.getClass().getSimpleName()) || "XResources".equals(resources.getClass().getSimpleName())){
             try {
                 Field field = Resources.class.getDeclaredField("mTmpMetrics");
                 field.setAccessible(true);
                 DisplayMetrics metrics = (DisplayMetrics) field.get(resources);
                 metrics.xdpi = size.x/designWidth*72f;
 
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
