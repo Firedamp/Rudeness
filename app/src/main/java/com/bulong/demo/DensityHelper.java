@@ -3,10 +3,14 @@ package com.bulong.demo;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
+
+import java.lang.reflect.Field;
 
 import static android.content.Context.WINDOW_SERVICE;
 
@@ -24,10 +28,31 @@ public class DensityHelper {
      * @param designWidth 设计稿的宽度
      */
     private static void resetDensity(Context context, float designWidth){
+        if(context == null)
+            return;
+
         Point size = new Point();
         ((WindowManager)context.getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getSize(size);
 
-        context.getResources().getDisplayMetrics().xdpi = size.x/designWidth*72f;
+        Resources resources = context.getResources();
+
+        resources.getDisplayMetrics().xdpi = size.x/designWidth*72f;
+
+        //解决MIUI更改框架导致的MIUI7+Android5.1.1上出现的失效问题
+        if("MiuiResources".equals(resources.getClass().getSimpleName())){
+            try {
+                Field field = Resources.class.getDeclaredField("mTmpMetrics");
+                field.setAccessible(true);
+                DisplayMetrics metrics = (DisplayMetrics) field.get(resources);
+                metrics.xdpi = size.x/designWidth*72f;
+
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     /**
