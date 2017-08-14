@@ -38,19 +38,9 @@ public class RudenessScreenHelper {
 
         resources.getDisplayMetrics().xdpi = size.x/designWidth*72f;
 
-        //解决MIUI更改框架导致的MIUI7+Android5.1.1上出现的失效问题(以及极少数基于这部分miui去掉art然后置入xposed的手机)
-        if("MiuiResources".equals(resources.getClass().getSimpleName()) || "XResources".equals(resources.getClass().getSimpleName())){
-            try {
-                Field field = Resources.class.getDeclaredField("mTmpMetrics");
-                field.setAccessible(true);
-                DisplayMetrics metrics = (DisplayMetrics) field.get(resources);
-                metrics.xdpi = size.x/designWidth*72f;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
+        DisplayMetrics metrics = getMetricsOnMiui(context.getResources());
+        if(metrics != null)
+            metrics.xdpi = size.x/designWidth*72f;
     }
 
     /**
@@ -62,20 +52,23 @@ public class RudenessScreenHelper {
     private static void restoreDensity(Context context){
         context.getResources().getDisplayMetrics().setToDefaults();
 
-        Resources resources = context.getResources();
+        DisplayMetrics metrics = getMetricsOnMiui(context.getResources());
+        if(metrics != null)
+            metrics.setToDefaults();
+    }
 
+    //解决MIUI更改框架导致的MIUI7+Android5.1.1上出现的失效问题(以及极少数基于这部分miui去掉art然后置入xposed的手机)
+    private static DisplayMetrics getMetricsOnMiui(Resources resources){
         if("MiuiResources".equals(resources.getClass().getSimpleName()) || "XResources".equals(resources.getClass().getSimpleName())){
             try {
                 Field field = Resources.class.getDeclaredField("mTmpMetrics");
                 field.setAccessible(true);
-                DisplayMetrics metrics = (DisplayMetrics) field.get(resources);
-                metrics.setToDefaults();
-
+                return  (DisplayMetrics) field.get(resources);
             } catch (Exception e) {
-                e.printStackTrace();
+                return null;
             }
-
         }
+        return null;
     }
 
     /**
