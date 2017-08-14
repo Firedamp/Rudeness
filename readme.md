@@ -3,12 +3,11 @@
 
 ---------
 本项目包括：
-- rudeness-sdk。根据上述方案实现的一个非常简单的库。
+- rudeness-sdk。根据上述方案实现的一个非常简单的库。
 - rudeness-demo。这是demo。
 
 ---------
-
-使用姿势：
+使用姿势：
 
 - 核心。使用冷门的pt作为长度单位。
 
@@ -21,7 +20,7 @@
 - 代码处理。(代码比较简单，所以你也可以不使用本依赖自己处理)
     在build.gradle中加入依赖：
     ```groovy
-    compile 'com.bulong.rudeness:rudeness:latest.release'
+    compile 'com.bulong.rudeness:rudeness:latest.release@aar'
     ```
     在Application的onCreate中引用：
     ```java
@@ -31,6 +30,46 @@
     ```
 
 这样绘制出来的页面就跟设计图几乎完全一样，无论大小屏上看起来就只是将设计图缩放之后的结果。
+
+-------
+SDK API Refrences：
+```java
+public class RudenessScreenHelper {
+
+    /**
+     * 转换dp为px
+     * @param context context
+     * @param value 需要转换的dp值
+     * @return px值
+     */
+    public static float dp2px(Context context, float value);
+
+    /**
+     * 转换pt为px
+     * @param context context
+     * @param value 需要转换的pt值，若context.resources.displayMetrics经过resetDensity()的修改则得到修正的相对长度，否则得到原生的磅
+     * @return px值
+     */
+    public static float pt2px(Context context, float value);
+
+    /**
+     * 构造方法
+     * @param application application
+     * @param width 设计稿宽度
+     */
+    public RudenessScreenHelper(Application application, float width);
+
+    /**
+     * 激活本方案
+     */
+    public void activate();
+
+    /**
+     * 恢复系统原生方案
+     */
+    public void inactivate();
+}
+```
 
 -------
 关于demo：
