@@ -117,15 +117,14 @@ public class RudenessScreenHelper {
         activityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                //通常情况下application与activity得到的resource虽然不是一个实例，但是displayMetrics是同一个实例，只需调用一次即可
-                //为了面对一些不可预计的情况以及向上兼容，分别调用一次较为保险
-                resetDensity(mApplication, designWidth);
-                resetDensity(activity, designWidth);
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
-
+                //通常情况下application与activity得到的resource虽然不是一个实例，但是displayMetrics是同一个实例，只需调用一次即可
+                //为了面对一些不可预计的情况以及向上兼容，分别调用一次较为保险
+                resetDensity(mApplication, designWidth);
+                resetDensity(activity, designWidth);
             }
 
             @Override
