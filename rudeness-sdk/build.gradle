@@ -6,7 +6,7 @@ publish {
     userOrg = 'bulong'
     groupId = 'com.bulong.rudeness'
     artifactId = 'rudeness'
-    publishVersion = '0.1.0'
+    publishVersion = '0.1.2'
     repoName = 'maven'
     desc = 'https://github.com/Firedamp/Rudeness'
     website = 'https://github.com/Firedamp/Rudeness'
