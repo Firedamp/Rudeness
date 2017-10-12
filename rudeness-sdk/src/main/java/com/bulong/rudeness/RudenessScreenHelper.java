@@ -27,7 +27,7 @@ public class RudenessScreenHelper {
      * @param context
      * @param designWidth 设计稿的宽度
      */
-    private static void resetDensity(Context context, float designWidth){
+    public static void resetDensity(Context context, float designWidth){
         if(context == null)
             return;
 
@@ -49,7 +49,7 @@ public class RudenessScreenHelper {
      *
      * @param context
      */
-    private static void restoreDensity(Context context){
+    public static void restoreDensity(Context context){
         context.getResources().getDisplayMetrics().setToDefaults();
 
         DisplayMetrics metrics = getMetricsOnMiui(context.getResources());
