@@ -131,7 +131,8 @@ public class RudenessScreenHelper {
 
             @Override
             public void onActivityResumed(Activity activity) {
-
+                resetDensity(mApplication, designWidth);
+                resetDensity(activity, designWidth);
             }
 
             @Override
