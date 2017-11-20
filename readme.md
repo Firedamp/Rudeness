@@ -31,14 +31,6 @@
 
 这样绘制出来的页面就跟设计图几乎完全一样，无论大小屏上看起来就只是将设计图缩放之后的结果。
 
-**若存在webview导致适配失效的问题**
-
-可以先继承WebView并重写`setOverScrollMode(int mode)`方法，在方法中调用super之后调用一遍`RudenessScreenHelper.resetDensity(getContext(), designWidth)`规避
-
-**若存在dialog中适配失效的问题**
-
-可以在dialog的oncreate中调用一遍`RudenessScreenHelper.resetDensity(getContext(), designWidth)`规避
-
 -------
 SDK API Refrences：
 ```java
@@ -78,6 +70,21 @@ public class RudenessScreenHelper {
     public void inactivate();
 }
 ```
+
+-------
+**FAQ**
+
+**若存在webview导致适配失效的问题**
+
+可以先继承WebView并重写`setOverScrollMode(int mode)`方法，在方法中调用super之后调用一遍`RudenessScreenHelper.resetDensity(getContext(), designWidth)`规避
+
+**若存在dialog中适配失效的问题**
+
+可以在dialog的oncreate中调用一遍`RudenessScreenHelper.resetDensity(getContext(), designWidth)`规避
+
+**旋转屏幕之后适配失效**
+
+可以在onConfigurationChanged中调用`RudenessScreenHelper.resetDensity(getContext(), designWidth)`规避
 
 -------
 关于demo：
