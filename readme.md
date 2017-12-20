@@ -86,6 +86,10 @@ public class RudenessScreenHelper {
 
 可以在onConfigurationChanged中调用`RudenessScreenHelper.resetDensity(getContext(), designWidth)`规避
 
+**特定国产机型ROM中偶先fragment失效**
+
+可以在fragment的onCreateView中调用`RudenessScreenHelper.resetDensity(getContext(), designWidth)`规避
+
 -------
 关于demo：
 
